@@ -23,10 +23,12 @@ export default function Home() {
   };
 
   const startRecording = async () => {
+    setRecordedBlob(null)
     const stream = await startCamera();
     setRecording(true);
     setTimer(0);
     chunks.current = [];
+    
 
     const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
     mediaRecorderRef.current = mediaRecorder;
@@ -114,9 +116,8 @@ export default function Home() {
             <button
               onClick={handleSearch}
               disabled={!searchQuery.trim()}
-              className={`px-4 py-2 bg-green-600 text-white rounded-lg font-semibold transition duration-200 ${
-                !searchQuery.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'
-              }`}
+              className={`px-4 py-2 bg-green-600 text-white rounded-lg font-semibold transition duration-200 ${!searchQuery.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'
+                }`}
             >
               Search
             </button>
@@ -132,7 +133,7 @@ export default function Home() {
         </p>
         <button
           onClick={() => setShowModal(true)}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 hover:bg-blue-700"
+          className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 hover:bg-green-700"
         >
           Get Mood Recommendations
         </button>
@@ -140,7 +141,7 @@ export default function Home() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20 overflow-auto">
           <div className="bg-gray-800 rounded-lg p-6 max-w-lg w-full relative">
             <button
               onClick={closeModal}
@@ -151,7 +152,7 @@ export default function Home() {
               </svg>
             </button>
             <h3 className="text-xl font-semibold text-white mb-4">Record Your Mood</h3>
-            <div className="relative mb-4">
+            {!recordedBlob && <div className="relative mb-4">
               <video
                 ref={videoRef}
                 className="w-full rounded-lg border border-gray-700"
@@ -165,7 +166,7 @@ export default function Home() {
                   Recording: {timer}s
                 </div>
               )}
-            </div>
+            </div>}
             {recordedBlob && (
               <div className="mb-4">
                 <h4 className="text-sm font-medium text-gray-200 mb-2">Preview</h4>
@@ -204,9 +205,8 @@ export default function Home() {
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className={`bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition duration-200 ${
-                      isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                    }`}
+                    className={`bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition duration-200 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'
+                      }`}
                   >
                     {isSubmitting ? 'Submitting...' : 'Get Recommendations'}
                   </button>
